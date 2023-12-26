@@ -1,0 +1,32 @@
+.add-note {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.add-note input {
+    width: 50%;
+    font-size: 1.5rem;
+    color: #333;
+    height: 3rem;
+    outline: none;
+    border: 1px solid #535353;
+    border-radius: 4px;
+}
+
+.add-note button {
+    margin-left: 3px;
+    width: 10%;
+    height: 3.3rem;
+    font-size: 1.5rem;
+}
+
+.add-note Select {
+    margin-left: 3px;
+    width: 10%;
+    height: 3.3rem;
+    font-size: 1.5rem;
+    background-color: rgb(253, 199, 249);
+    border-radius: 5px;
+}
