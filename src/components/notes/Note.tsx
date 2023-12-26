@@ -1,13 +1,17 @@
-import React from 'react';
-import "./Notes.css"
-import { NoteProps } from './notes-type';
+import React from "react";
+import "./Notes.css";
+import { NoteProps, Color } from "./notes-type";
+import Card from "../card/card";
 
 const Notes = (props: NoteProps) => {
   return (
-    <div className={`note ${props.priority}`}>
-      {props.text}
-    </div>
-  )
-}
+    <Card bgColor={props.priority && Color[props.priority]}
+    height="2"
+    padding="3"
+    >
+      <div>{props.text}</div>
+    </Card>
+  );
+};
 
 export default Notes;
