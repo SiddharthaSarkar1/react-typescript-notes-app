@@ -10,3 +10,10 @@
 .low {
     background-color: #a1ff9e;
 }
+.right-corner {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0.5rem;
+    margin-right: 10px;
+}
