@@ -5,11 +5,10 @@ import { NoteType, Priority } from "../notes/notes-type";
 import { v4 as uuidv4 } from "uuid";
 import Card from "../card/card";
 import { ThemeContext } from "../../context/theme/theme";
+import { StateContext } from "../../context/state/state";
 
 type AddNoteProps = {
   addNote: (note: NoteType) => void,
-  editMode: boolean,
-  noteToBeEditted: NoteType | null,
   updateNote: (updatedNote: NoteType) => void,
 };
 
@@ -19,6 +18,7 @@ const AddNote = (props: AddNoteProps) => {
   const [priority, setPriority] = useState<Priority>("low");
 
   const theme = useContext(ThemeContext);
+  const { state, dispatch } = useContext(StateContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -31,11 +31,11 @@ const AddNote = (props: AddNoteProps) => {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    if(props.editMode) {
-      props.noteToBeEditted && props.updateNote({
+    if(state.editMode) {
+      state.noteToBeEditted && props.updateNote({
         text,
         priority,
-        id: props.noteToBeEditted.id,
+        id: state.noteToBeEditted.id,
       });
     }else {
       props.addNote({
@@ -54,10 +54,10 @@ const AddNote = (props: AddNoteProps) => {
   };
 
   useEffect(() => {
-    if(props.noteToBeEditted && props.editMode){
-    setNoteContent(props.noteToBeEditted)
+    if(state.noteToBeEditted && state.editMode){
+    setNoteContent(state.noteToBeEditted)
     }
-  }, [props.noteToBeEditted, props.editMode]);
+  }, [state.noteToBeEditted, state.editMode]);
   
 
   return (
@@ -69,7 +69,7 @@ const AddNote = (props: AddNoteProps) => {
           <option value="medium">Medium</option>
           <option value="low">Low</option>
         </select>
-        <button onClick={handleClick}>{ props.editMode ? 'Edit' :  'Add' }</button>
+        <button onClick={handleClick}>{ state.editMode ? 'Edit' :  'Add' }</button>
       </form>
     </Card>
   );

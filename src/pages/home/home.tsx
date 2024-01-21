@@ -6,55 +6,51 @@ import { NotesArr } from "../../data";
 import AddNote from "../../components/add-note/add-note";
 import { NoteType } from "../../components/notes/notes-type";
 import { ThemeContext } from "../../context/theme/theme";
+import { StateContext } from "../../context/state/state";
 
 function Home() {
-  const [notes, setNotes] = useState(NotesArr);
-  const [editMode, setEditMode] = useState(false);
-  const [noteToBeEditted, setNoteToBeEditted] = useState<NoteType | null>(null);
+  // const [notes, setNotes] = useState(NotesArr);
+  // const [editMode, setEditMode] = useState(false);
+  // const [noteToBeEditted, setNoteToBeEditted] = useState<NoteType | null>(null);
 
   const theme = useContext(ThemeContext);
+  const { state, dispatch } = useContext(StateContext);
 
   const addNote = (note: NoteType) => {
-    setNotes([note, ...notes]);
+    // setNotes([note, ...notes]);
+    dispatch({type: 'ADD_NOTE', payload: note});
   };
 
   const updateNote = (updatedNote: NoteType) => {
-    const index = notes.findIndex((note) => note.id === updatedNote.id);
-    let editedNotes = [...notes];
-    editedNotes.splice(index, 1, updatedNote);
-    setNotes(editedNotes);
-    setEditMode(false);
+    // setNotes(editedNotes);
+    dispatch({type: 'UPDATE_NOTE', payload: updatedNote});
+    dispatch({type: 'SET_EDIT_MODE', payload: false});
   };
 
   const editNote = (id: string) => {
     console.log("edit", id);
-    const note = notes.find((note) => note.id === id);
-    setEditMode(true);
+    const note = state.notes.find((note) => note.id === id);
+    dispatch({type: 'SET_EDIT_MODE', payload: true});
     if (note) {
-      setNoteToBeEditted(note);
+      dispatch({type: 'SET_NOTE_FOR_EDIT', payload: note});
     }
   };
 
   const deleteNote = (id: string) => {
-    const index = notes.findIndex((note) => note.id === id);
-    let editedNotes = [...notes];
-    editedNotes.splice(index, 1);
-    setNotes(editedNotes);
+    dispatch({type: 'DELETE_NOTE', payload: id});
   };
 
   return (
     
     <div className={`home ${theme}`}>
       <h1 className="glowing-text">Notes App</h1>
-      <h4>Available Notes : {notes.length}</h4>
+      <h4>Available Notes : {state.notes.length}</h4>
       <AddNote
         addNote={addNote}
-        editMode={editMode}
-        noteToBeEditted={noteToBeEditted}
         updateNote={updateNote}
       />
       <div className="">
-        {notes.map((note) => (
+        {state.notes.map((note) => (
           <Note
             key={note.id}
             id={note.id}
