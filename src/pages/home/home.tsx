@@ -1,12 +1,11 @@
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
 
 import "./home.css";
 import Note from "../../components/notes/Note";
-import { NotesArr } from "../../data";
 import AddNote from "../../components/add-note/add-note";
-import { NoteType } from "../../components/notes/notes-type";
 import { ThemeContext } from "../../context/theme/theme";
 import { StateContext } from "../../context/state/state";
+import { DELETE_NOTE, SET_EDIT_MODE, SET_NOTE_FOR_EDIT } from "../../actions";
 
 function Home() {
   // const [notes, setNotes] = useState(NotesArr);
@@ -16,39 +15,24 @@ function Home() {
   const theme = useContext(ThemeContext);
   const { state, dispatch } = useContext(StateContext);
 
-  const addNote = (note: NoteType) => {
-    // setNotes([note, ...notes]);
-    dispatch({type: 'ADD_NOTE', payload: note});
-  };
-
-  const updateNote = (updatedNote: NoteType) => {
-    // setNotes(editedNotes);
-    dispatch({type: 'UPDATE_NOTE', payload: updatedNote});
-    dispatch({type: 'SET_EDIT_MODE', payload: false});
-  };
-
   const editNote = (id: string) => {
     console.log("edit", id);
     const note = state.notes.find((note) => note.id === id);
-    dispatch({type: 'SET_EDIT_MODE', payload: true});
+    dispatch({ type: SET_EDIT_MODE, payload: true });
     if (note) {
-      dispatch({type: 'SET_NOTE_FOR_EDIT', payload: note});
+      dispatch({ type: SET_NOTE_FOR_EDIT, payload: note });
     }
   };
 
   const deleteNote = (id: string) => {
-    dispatch({type: 'DELETE_NOTE', payload: id});
+    dispatch({ type: DELETE_NOTE, payload: id });
   };
 
   return (
-    
     <div className={`home ${theme}`}>
       <h1 className="glowing-text">Notes App</h1>
       <h4>Available Notes : {state.notes.length}</h4>
-      <AddNote
-        addNote={addNote}
-        updateNote={updateNote}
-      />
+      <AddNote />
       <div className="">
         {state.notes.map((note) => (
           <Note
@@ -62,7 +46,6 @@ function Home() {
         ))}
       </div>
     </div>
-    
   );
 }
 
